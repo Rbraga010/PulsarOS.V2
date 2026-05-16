@@ -1,6 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Section, Eyebrow, H2, Lede, GoldButton, GhostButton } from "@/components/Section";
 import { AgentCard, MiniSkillRow, type Agent } from "@/components/AgentCard";
+import { AsciiDivider, SectionLabel, GridPattern } from "@/components/AsciiDivider";
+import { TypingTerminal } from "@/components/TypingTerminal";
 import {
   Terminal,
   ShieldCheck,
@@ -11,8 +13,16 @@ import {
   Sparkles,
   ArrowRight,
   Check,
-  X,
+  Plus,
   Quote,
+  Code2,
+  Database,
+  FileText,
+  Megaphone,
+  Briefcase,
+  Network,
+  Zap,
+  Lock,
 } from "lucide-react";
 
 /* ============================================================
@@ -40,13 +50,6 @@ const HEADS = [
   { name: "Rebecca",  role: "Heads de Memória · cataloga aprendizado e doutrina", color: "#E04D6C" },
 ];
 
-const TECH = [
-  { icon: Cpu,     title: "Modelo",   txt: "Claude Sonnet/Opus 4.x via Anthropic API · com fallback OpenAI." },
-  { icon: Server,  title: "Servidor", txt: "VPS própria (Hostinger, Hetzner, DigitalOcean). Tu escolhe e tu manda." },
-  { icon: Layers,  title: "Stack",    txt: "Next.js 14 · Postgres 15 · Prisma · systemd · cron · bash scripts." },
-  { icon: Workflow,title: "Hooks",    txt: "UserPromptSubmit · PostToolUse · Stop. Cérebro auto-atualiza a cada ação." },
-];
-
 /* ============================================================
  * PAGE
  * ========================================================== */
@@ -56,13 +59,17 @@ export default function Page() {
     <main className="bg-navy text-cream">
       <Nav />
       <Hero />
-      <SectionCompare />
       <SectionPulse />
       <SectionDonna />
       <SectionVPs />
-      <SectionHeads />
+      <SectionTimeCompleto />
+      <SectionCanais />
+      <BandReafirmacao />
+      <SectionCapacidades />
+      <SectionCompare />
       <SectionWarRoom />
-      <SectionArchitecture />
+      <SectionArquitetura />
+      <SectionPosseTotal />
       <SectionGuarantee />
       <SectionPricing />
       <SectionLead />
@@ -72,7 +79,7 @@ export default function Page() {
 }
 
 /* ============================================================
- * 0. NAV
+ * NAV
  * ========================================================== */
 
 function Nav() {
@@ -84,13 +91,15 @@ function Nav() {
             <Terminal className="w-4 h-4 text-gold" />
           </div>
           <span className="font-display text-lg tracking-tight">PulsarOS</span>
+          <span className="ml-2 font-mono text-[10px] uppercase tracking-widest text-text3">v2.0</span>
         </div>
         <nav className="hidden md:flex items-center gap-7 text-xs uppercase tracking-widest font-mono text-text2">
-          <a href="#pulse" className="hover:text-gold transition">Pulse</a>
-          <a href="#donna" className="hover:text-gold transition">Donna</a>
-          <a href="#vps" className="hover:text-gold transition">VPs</a>
-          <a href="#warroom" className="hover:text-gold transition">War Room</a>
-          <a href="#preco" className="hover:text-gold transition">Investimento</a>
+          <a href="#pulse" className="hover:text-gold transition">pulse</a>
+          <a href="#donna" className="hover:text-gold transition">donna</a>
+          <a href="#vps" className="hover:text-gold transition">vps</a>
+          <a href="#capacidades" className="hover:text-gold transition">capacidades</a>
+          <a href="#warroom" className="hover:text-gold transition">war room</a>
+          <a href="#preco" className="hover:text-gold transition">investimento</a>
         </nav>
         <GhostButton href="#cadastro">Quero entrar</GhostButton>
       </div>
@@ -104,17 +113,23 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative pt-36 pb-24 md:pt-44 md:pb-32 h-grad-radial overflow-hidden">
+    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 h-grad-radial overflow-hidden">
+      <GridPattern />
       <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-7">
-            <Eyebrow>PulsarOS · v2.0 · maio 2026</Eyebrow>
+            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-gold mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse-glow" />
+              <span>// pulsaros · v2.0 · maio.2026</span>
+            </div>
 
             <h1
               className="font-display leading-[0.98] tracking-tight"
-              style={{ fontSize: "clamp(44px, 6vw, 84px)", fontWeight: 400 }}
+              style={{ fontSize: "clamp(42px, 5.5vw, 78px)", fontWeight: 400 }}
             >
               Não é curso.
+              <br />
+              Não é mentoria.
               <br />
               <span className="h-grad-gold">É a sua empresa</span>
               <br />
@@ -122,36 +137,44 @@ function Hero() {
             </h1>
 
             <p className="mt-8 text-lg md:text-xl text-text2 max-w-2xl leading-relaxed" style={{ fontWeight: 300 }}>
-              Pulse, Donna e 6 VPs instalados no <span className="text-cream">seu próprio servidor</span>.
-              A mesma stack agêntica que <span className="text-gold">outras empresas cobram R$ 49 mil/ano</span>
-              {" · "}
+              Pulse, Donna, 6 VPs, 28 heads e War Room. Instalados no{" "}
+              <span className="text-cream">seu próprio servidor</span>, rodando autônomo, 24 horas por dia.
+              A mesma stack agêntica que <span className="text-gold">outras empresas cobram R$ 49 mil/ano</span> ·
               aqui sai por <span className="font-mono text-gold">R$ 4.997</span> · uma vez · sem refém.
             </p>
+
+            <div className="mt-8 font-mono text-xs text-text3 flex items-center gap-2 flex-wrap">
+              <span className="px-2.5 py-1 rounded bg-gold/10 border border-gold/30 text-gold">claude max</span>
+              <span className="text-text3">+</span>
+              <span className="px-2.5 py-1 rounded bg-violet2/10 border border-violet2/30" style={{ color: "#A78BFA" }}>openclaw fallback</span>
+              <span className="text-text3">+</span>
+              <span className="px-2.5 py-1 rounded bg-cream/5 border border-line text-text2">+800k vendas mapeadas</span>
+            </div>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <GoldButton href="#preco" size="lg">
                 Quero instalar <ArrowRight className="w-4 h-4" />
               </GoldButton>
-              <GhostButton href="#pulse">Conhecer o time</GhostButton>
+              <GhostButton href="#capacidades">Ver capacidades</GhostButton>
             </div>
 
             <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                ["8", "agentes principais"],
-                ["28", "heads especializadas"],
-                ["1", "War Room completo"],
-                ["100%", "no seu servidor"],
+                ["+8", "agentes principais"],
+                ["+28", "heads especializadas"],
+                ["24/7", "operação contínua"],
+                ["7d", "para instalar"],
               ].map(([n, l]) => (
                 <div key={l} className="border-l border-gold/40 pl-4">
-                  <div className="font-display text-3xl md:text-4xl font-medium h-grad-gold">{n}</div>
+                  <div className="font-mono text-3xl md:text-4xl font-medium h-grad-gold">{n}</div>
                   <div className="text-[10px] uppercase tracking-widest text-text3 font-mono mt-1">{l}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Aside: Terminal mock + foto Pulse */}
-          <div className="lg:col-span-5">
+          {/* Aside: terminal vivo + Pulse foto */}
+          <div className="lg:col-span-5 space-y-5">
             <div className="relative">
               <div
                 className="card-glass rounded-2xl overflow-hidden glow-violet relative"
@@ -171,29 +194,13 @@ function Hero() {
                   <span className="font-mono text-[10px] uppercase tracking-widest text-gold">live</span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="eyebrow">Pulse · CEO Virtual</div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-gold">// pulse · ceo virtual</div>
                   <div className="font-display text-3xl text-cream mt-1">Orquestra o time</div>
                 </div>
               </div>
-
-              {/* Terminal flutuante sobreposto */}
-              <div className="absolute -bottom-6 -left-6 md:-left-12 w-64 hidden md:block">
-                <div className="bg-black/85 border border-gold/30 rounded-xl p-3 font-mono text-[10px] backdrop-blur shadow-2xl">
-                  <div className="flex items-center gap-1.5 pb-2 border-b border-line">
-                    <span className="w-2 h-2 rounded-full bg-red/70" />
-                    <span className="w-2 h-2 rounded-full bg-gold/70" />
-                    <span className="w-2 h-2 rounded-full bg-green/70" />
-                    <span className="ml-1.5 text-text3 text-[9px] uppercase tracking-widest">pulse.live</span>
-                  </div>
-                  <div className="mt-2 space-y-1">
-                    <div className="text-gold">$ status --all</div>
-                    <div className="text-text2">8 agentes · 28 skills · ok</div>
-                    <div className="text-text2">last decision · 12s atrás</div>
-                    <div className="text-green">all systems · operational ●</div>
-                  </div>
-                </div>
-              </div>
             </div>
+
+            <TypingTerminal />
           </div>
         </div>
       </div>
@@ -210,7 +217,508 @@ function Hero() {
 }
 
 /* ============================================================
- * 2. COMPARAÇÃO NÚCLEO
+ * 2. PULSE (Agente principal · 00)
+ * ========================================================== */
+
+function SectionPulse() {
+  return (
+    <Section bg="navy2" id="pulse">
+      <SectionLabel num="00" label="agente.principal" />
+      <div className="grid md:grid-cols-12 gap-12 items-start">
+        <div className="md:col-span-5">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-gold mb-3">
+            ▌P U L S E▐
+          </div>
+          <H2>
+            O <span className="h-grad-gold">orquestrador</span>.<br />
+            Comanda todo o time.
+          </H2>
+          <Lede className="mt-6">
+            Recebe a estratégia, distribui as tarefas, garante a execução. Lê todo contexto da
+            operação. Memória persistente em banco vetorial. Não esquece, não perde o fio, não
+            atrasa entrega.
+          </Lede>
+          <ul className="mt-8 space-y-3">
+            {[
+              "Delega para Donna, VPs ou heads conforme o caso",
+              "Protocolo de 3 fases: eco em 10s · execução · entrega com evidência",
+              "Memória pgvector · ~25k mensagens · busca semântica sub-50ms",
+              "Tom direto · sem floreio · pensa em margem",
+            ].map((t) => (
+              <li key={t} className="flex items-start gap-3 text-text2">
+                <Plus className="w-4 h-4 text-gold shrink-0 mt-1" />
+                <span className="leading-relaxed">{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="md:col-span-7">
+          <div
+            className="card-glass rounded-2xl overflow-hidden glow-gold relative aspect-[4/3]"
+            style={{ borderColor: "rgba(201,168,74,0.35)" }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/pulse.jpg" alt="Pulse · CEO virtual" className="w-full h-full object-cover" />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(180deg, transparent 40%, rgba(11,12,31,0.85) 95%)",
+              }}
+            />
+            <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                  // pulse · ceo virtual
+                </div>
+                <div className="font-display text-3xl text-cream">Orquestrador</div>
+              </div>
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-gold">
+                <span className="w-2 h-2 rounded-full bg-green animate-pulse-glow" />
+                online
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 font-mono text-xs space-y-2 bg-black/60 rounded-xl p-5 border border-gold/25 backdrop-blur">
+            <div className="flex items-center gap-2 pb-2 border-b border-line">
+              <span className="w-2.5 h-2.5 rounded-full bg-red/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-gold/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green/70" />
+              <span className="ml-2 text-text3 text-[10px] uppercase tracking-widest">
+                pulse@servidor ~ live
+              </span>
+            </div>
+            <div className="text-gold/70">[14:32:01]</div>
+            <div className="text-text2">
+              <span className="text-green">+</span> Rodrigo: "monta carrossel sobre IA agêntica"
+            </div>
+            <div className="text-text2">
+              <span className="text-gold">→</span> Pulse: 👀 entendi · delegando pra Caio+Keila · 10 min
+            </div>
+            <div className="text-text2">
+              <span className="text-violet2">↳</span> delegando: caio (estratégia) + keila (arte/copy)
+            </div>
+            <div className="text-text2">
+              <span className="text-gold">→</span> Pulse: Pronto Chefe · carrossel entregue · 8 min ·{" "}
+              <span className="text-gold underline decoration-dotted">/conteudo/calendario</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 3. DONNA
+ * ========================================================== */
+
+function SectionDonna() {
+  return (
+    <Section bg="navy" id="donna">
+      <SectionLabel num="01" label="agente.principal" color="violet" />
+      <div className="grid md:grid-cols-12 gap-12 items-start">
+        <div className="md:col-span-7 order-2 md:order-1">
+          <div
+            className="card-glass rounded-2xl overflow-hidden glow-violet relative aspect-[4/3]"
+            style={{ borderColor: "rgba(122,91,160,0.45)" }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/donna.jpg"
+              alt="Donna · secretária executiva"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: "center top" }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(180deg, transparent 40%, rgba(11,12,31,0.85) 95%)",
+              }}
+            />
+            <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-widest" style={{ color: "#A78BFA" }}>
+                  // donna · secretária executiva
+                </div>
+                <div className="font-display text-3xl text-cream">Filtro inteligente</div>
+              </div>
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest" style={{ color: "#A78BFA" }}>
+                <span className="w-2 h-2 rounded-full bg-green animate-pulse-glow" />
+                online
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 font-mono text-xs space-y-2 bg-black/60 rounded-xl p-5 border border-violet2/30 backdrop-blur">
+            <div className="flex items-center gap-2 pb-2 border-b border-line">
+              <span className="w-2.5 h-2.5 rounded-full bg-red/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-gold/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green/70" />
+              <span className="ml-2 text-text3 text-[10px] uppercase tracking-widest">
+                donna@servidor ~ live
+              </span>
+            </div>
+            <div className="text-violet2/70">[09:14:22]</div>
+            <div className="text-text2">
+              <span className="text-green">+</span> Cliente X: "quero reunião pra falar do projeto"
+            </div>
+            <div className="text-text2">
+              <span className="text-violet2">→</span> Donna: 👀 saquei · vejo agenda e te confirmo · 2 min
+            </div>
+            <div className="text-text2">
+              <span className="text-violet2">→</span> Donna: Terça 14h livre · convite enviado · agenda bloqueada
+            </div>
+          </div>
+        </div>
+
+        <div className="md:col-span-5 order-1 md:order-2">
+          <div className="font-mono text-[10px] uppercase tracking-widest mb-3" style={{ color: "#A78BFA" }}>
+            ▌D O N N A▐
+          </div>
+          <H2>
+            A <span style={{ color: "#A78BFA" }}>secretária executiva</span>.<br />
+            Protege sua agenda.
+          </H2>
+          <Lede className="mt-6">
+            Recebe contato, filtra ruído, agenda reunião, lembra prazo, cobra retorno. É a sua
+            assistente de chefe · não a sua atendente.
+          </Lede>
+          <ul className="mt-8 space-y-3">
+            {[
+              "Triagem de mensagens · só sobe o que merece teu tempo",
+              "Gestão de agenda · bloqueia janelas, marca, cancela, remarca",
+              "Memória de contatos · sabe com quem tu já falou e quando",
+              "Tom diplomático · resolve sem te puxar para o problema",
+            ].map((t) => (
+              <li key={t} className="flex items-start gap-3 text-text2">
+                <Plus className="w-4 h-4 shrink-0 mt-1" style={{ color: "#A78BFA" }} />
+                <span className="leading-relaxed">{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <AsciiDivider />
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 4. 6 VPs · equipe.principal
+ * ========================================================== */
+
+function SectionVPs() {
+  return (
+    <Section bg="navy2" id="vps">
+      <SectionLabel num="02" label="equipe.principal // 01-06" />
+      <H2 className="max-w-3xl">
+        Os seis <span className="h-grad-gold">VPs</span>.<br />
+        Cada um com função clara.
+      </H2>
+      <Lede className="mt-6">
+        Cada VP tem soul, skills e tom próprio. Reportam ao Pulse, decidem dentro da sua área,
+        cobram entregas dos heads. Você não gerencia 6 freelancers · você comanda 6 diretores.
+      </Lede>
+
+      <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {VPS.map((vp) => (
+          <AgentCard key={vp.slug} agent={vp} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 5. TIME COMPLETO (espelha "Não é só os sete")
+ * ========================================================== */
+
+function SectionTimeCompleto() {
+  const bullets = [
+    { icon: Network,   k: "+28 heads especializados",         d: "Embaixo dos VPs · cada VP gerencia o seu time. Carrossel · tráfego · SDR · prospec · memória · design." },
+    { icon: Megaphone, k: "+SDRs de atendimento 24h",         d: "Respondem em segundos · qualificam em minutos · DM Instagram · TikTok · LinkedIn · site." },
+    { icon: Briefcase, k: "+Plataforma de prospecção ativa",  d: "Cata lead onde ele está · Instagram · Google Meu Negócio · LinkedIn · enriquecimento automático." },
+    { icon: Database,  k: "+CRM integrado e rodando",         d: "Configurado · pipeline ao vivo · webhook · automações · tracking Hotmart em tempo real." },
+    { icon: Lock,      k: "+Área de membros própria",         d: "Pra teus clientes ou time interno · controle de acesso · conteúdo segmentado · sem refém de plataforma." },
+  ];
+  return (
+    <Section bg="navy" id="time">
+      <SectionLabel num="03" label="time.completo" />
+      <H2 className="max-w-3xl">
+        Não são só os <span className="h-grad-gold">oito</span>.
+      </H2>
+      <Lede className="mt-6">
+        Além dos agentes principais, o PulsarOS entrega a infraestrutura inteira pronta. Tudo
+        configurado, integrado e operando no seu servidor desde o primeiro dia. Um time que busca,
+        qualifica, agenda e vende por você 24 horas.
+      </Lede>
+
+      <div className="mt-14 grid md:grid-cols-2 gap-5">
+        {bullets.map((b) => {
+          const Icon = b.icon;
+          return (
+            <div key={b.k} className="card-glass rounded-2xl p-6 hairline flex gap-4">
+              <Icon className="w-5 h-5 text-gold shrink-0 mt-1" />
+              <div>
+                <div className="font-display text-xl text-cream leading-tight">{b.k}</div>
+                <p className="mt-2 text-sm text-text2 leading-relaxed" style={{ fontWeight: 300 }}>
+                  {b.d}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 6. CANAIS DE ATUAÇÃO
+ * ========================================================== */
+
+function SectionCanais() {
+  return (
+    <Section bg="navy2" id="canais">
+      <SectionLabel num="04" label="canais.de.atuacao" />
+      <H2 className="max-w-3xl">
+        Onde a <span className="h-grad-gold">equipe atua</span>.
+      </H2>
+      <Lede className="mt-6">
+        Prospecção ativa pra encher o topo do funil. Atendimento em escala pra converter cada lead
+        que chega. Tudo integrado, tudo rastreável.
+      </Lede>
+
+      <div className="mt-14 grid md:grid-cols-2 gap-6">
+        {/* Prospec ativa */}
+        <div className="card-glass rounded-2xl p-8 hairline">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-gold mb-3">
+            // prospecção.ativa
+          </div>
+          <div className="font-display text-2xl md:text-3xl text-cream leading-tight mb-2">
+            Cata o lead onde ele está
+          </div>
+          <p className="text-text2 leading-relaxed mb-6" style={{ fontWeight: 300 }}>
+            Outbound qualificado, sem spam · enriquecimento automático antes de abrir conversa.
+          </p>
+          <div className="space-y-3">
+            {[
+              { c: "Instagram",          d: "DM e comentários · approach contextual" },
+              { c: "Google Meu Negócio", d: "Locais qualificados por nicho + região" },
+              { c: "LinkedIn",           d: "B2B · cargo + setor + tamanho de empresa" },
+            ].map((x) => (
+              <div key={x.c} className="flex items-start gap-3 py-2 border-b border-line">
+                <Zap className="w-4 h-4 text-gold shrink-0 mt-1" />
+                <div>
+                  <div className="font-mono text-xs uppercase tracking-widest text-gold">{x.c}</div>
+                  <div className="text-sm text-text2">{x.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Atendimento SDR */}
+        <div className="card-glass rounded-2xl p-8" style={{ borderColor: "rgba(122,91,160,0.45)" }}>
+          <div className="font-mono text-[10px] uppercase tracking-widest mb-3" style={{ color: "#A78BFA" }}>
+            // atendimento.sdr.24h
+          </div>
+          <div className="font-display text-2xl md:text-3xl text-cream leading-tight mb-2">
+            Responde em segundos · qualifica em minutos
+          </div>
+          <p className="text-text2 leading-relaxed mb-6" style={{ fontWeight: 300 }}>
+            Cada lead que chega · respondido na hora · qualificado via SPIN · agendado no calendário.
+          </p>
+          <div className="space-y-3">
+            {[
+              { c: "Instagram",      d: "DM + comentários · primeiro toque <60s" },
+              { c: "TikTok",         d: "DM + bio link tracking" },
+              { c: "LinkedIn",       d: "InMail + conversas existentes" },
+              { c: "Site do cliente", d: "Chat embed · captura + qualificação" },
+            ].map((x) => (
+              <div key={x.c} className="flex items-start gap-3 py-2 border-b border-line">
+                <Zap className="w-4 h-4 shrink-0 mt-1" style={{ color: "#A78BFA" }} />
+                <div>
+                  <div className="font-mono text-xs uppercase tracking-widest" style={{ color: "#A78BFA" }}>{x.c}</div>
+                  <div className="text-sm text-text2">{x.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 7. FAIXA REAFIRMAÇÃO
+ * ========================================================== */
+
+function BandReafirmacao() {
+  return (
+    <section className="relative bg-navy border-y border-gold/15 overflow-hidden">
+      <GridPattern />
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20 text-center relative z-10">
+        <div className="font-mono text-[10px] uppercase tracking-widest text-gold mb-5">
+          // Não é curso. Não é mentoria. //
+        </div>
+        <h3 className="font-display text-3xl md:text-5xl leading-[1.1]" style={{ fontWeight: 400 }}>
+          É o time pronto, <span className="h-grad-gold">instalado no seu servidor</span>,
+          <br className="hidden md:block" /> rodando 24 horas por dia.
+        </h3>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+ * 8. CAPACIDADES DO TIME (a maior · 6 subseções)
+ * ========================================================== */
+
+function SectionCapacidades() {
+  const groups = [
+    {
+      num: "01",
+      icon: Database,
+      title: "Memória infinita",
+      sub: "diferencial.tecnico",
+      bullets: [
+        "Agentes que nunca esquecem, nunca alucinam entre sessões",
+        "Banco vetorial pgvector · ~25 mil mensagens preservadas por agente",
+        "Busca semântica em sub-50ms · contexto recuperado instantâneo",
+        "Sessões persistem para sempre · com índice por data, tópico e pessoa",
+      ],
+    },
+    {
+      num: "02",
+      icon: Code2,
+      title: "Sites e Páginas",
+      sub: "frontend.entregaveis",
+      bullets: [
+        "Landing page de venda em qualquer estilo (terminal · editorial · e-commerce)",
+        "Site institucional completo · multi-página · SEO básico",
+        "Página de obrigado pós-compra (Hotmart · Eduzz · Kiwify)",
+        "Página de captura com formulário direto no CRM",
+        "Quiz de qualificação com agendamento automático",
+        "Dashboard analytics em tempo real",
+      ],
+    },
+    {
+      num: "03",
+      icon: FileText,
+      title: "Documentos Comerciais",
+      sub: "docs.entregaveis",
+      bullets: [
+        "Proposta comercial em HTML interativo (não é PDF chato)",
+        "Plano de negócio personalizado",
+        "Apostila navegável (livro digital web)",
+        "Slides de apresentação animados",
+        "Roteiros de aula completos",
+      ],
+    },
+    {
+      num: "04",
+      icon: Megaphone,
+      title: "Conteúdo pra Redes",
+      sub: "conteudo.entregaveis",
+      bullets: [
+        "Carrossel Instagram em imagens (anime ultra realista)",
+        "Carrossel em vídeo motion animado",
+        "Análise BMAD do Instagram (diagnóstico + plano 30 dias)",
+        "Roteiros de Reels e VSL",
+        "Copy publicitária (anúncios Meta · headlines · hooks)",
+        "Tradução e adaptação de carrossel internacional",
+        "Edição de vídeo (em breve)",
+      ],
+    },
+    {
+      num: "05",
+      icon: Briefcase,
+      title: "Operação Comercial",
+      sub: "comercial.entregaveis",
+      bullets: [
+        "Atendimento SDR 24h via DM (Instagram · TikTok · LinkedIn · site)",
+        "Prospecção ativa (Instagram · Google Meu Negócio · LinkedIn)",
+        "Qualificação de lead via SPIN selling",
+        "Agendamento automático em calendário",
+        "Follow-up programado (15min · 18h · reativação)",
+        "Gerenciamento do CRM · contatos · tags · pipelines · automações",
+        "Tracking de vendas Hotmart em tempo real",
+        "Webhook integration com qualquer plataforma",
+      ],
+    },
+    {
+      num: "06",
+      icon: Server,
+      title: "Infraestrutura",
+      sub: "infra.entregaveis",
+      bullets: [
+        "Setup completo de servidor (VPS Hostinger · Hetzner · DO) com tudo configurado",
+        "Domínio + DNS (Cloudflare) + SSL automático",
+        "Deploy automático GitHub para Vercel ou Cloudflare Pages",
+        "Backup e versionamento de tudo",
+        "Monitoramento e logs em tempo real",
+      ],
+    },
+  ];
+
+  return (
+    <Section bg="navy" id="capacidades">
+      <SectionLabel num="05" label="capacidades.do.time" />
+      <H2 className="max-w-3xl">
+        O que esse time <span className="h-grad-gold">sabe fazer</span>.
+      </H2>
+      <Lede className="mt-6">
+        Repertório real, baseado em centenas de entregas dos últimos meses. Tudo isso vai pra
+        dentro do seu servidor no dia um · você só precisa pedir.
+      </Lede>
+
+      <div className="mt-16 space-y-6">
+        {groups.map((g) => {
+          const Icon = g.icon;
+          return (
+            <div key={g.num} className="card-glass rounded-2xl p-8 hairline">
+              <div className="grid md:grid-cols-12 gap-8 items-start">
+                <div className="md:col-span-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-11 h-11 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-gold" />
+                    </div>
+                    <div>
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-text3">
+                        // {g.sub}
+                      </div>
+                      <div className="font-mono text-xs text-gold">{g.num}</div>
+                    </div>
+                  </div>
+                  <div className="font-display text-2xl md:text-3xl text-cream leading-tight">
+                    {g.title}
+                  </div>
+                </div>
+                <div className="md:col-span-8">
+                  <ul className="space-y-2.5">
+                    {g.bullets.map((b) => (
+                      <li key={b} className="flex items-start gap-3 text-text2">
+                        <Plus className="w-3.5 h-3.5 text-gold shrink-0 mt-1.5" />
+                        <span className="leading-relaxed text-sm md:text-base">{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 9. COMPARAÇÃO
  * ========================================================== */
 
 function SectionCompare() {
@@ -225,313 +733,38 @@ function SectionCompare() {
 
   return (
     <Section bg="navy2" id="compare">
-      <Eyebrow>O que o mercado entrega · o que nós entregamos</Eyebrow>
+      <SectionLabel num="06" label="outras.empresas.vs.pulsaros" />
       <H2 className="max-w-3xl">
         Outras empresas <span className="text-text3">vs</span>{" "}
         <span className="h-grad-gold">PulsarOS</span>
       </H2>
       <Lede className="mt-6">
-        Consultorias agênticas sérias estão cobrando R$ 25 mil de setup + R$ 2 mil por mês · te entregam
-        o sistema operado, dentro do servidor delas. PulsarOS pega a mesma stack agêntica, abre o
-        código, te ensina a operar e te entrega a posse total · por uma fração do preço · sem
-        mensalidade.
+        Consultorias agênticas sérias estão cobrando R$ 25 mil de setup + R$ 2 mil por mês · te
+        entregam o sistema operado, dentro do servidor delas. PulsarOS pega a mesma stack agêntica,
+        abre o código, te ensina a operar e te entrega a posse total · por uma fração do preço ·
+        sem mensalidade.
       </Lede>
 
       <div className="mt-12 card-glass rounded-2xl overflow-hidden">
         <div className="grid grid-cols-12 px-6 py-4 border-b border-line bg-navy/50">
-          <div className="col-span-4 eyebrow">Critério</div>
-          <div className="col-span-4 eyebrow text-text3">Consultorias agênticas</div>
-          <div className="col-span-4 eyebrow" style={{ color: "#C9A84A" }}>
-            PulsarOS
-          </div>
+          <div className="col-span-4 font-mono text-[10px] uppercase tracking-widest text-text3">// critério</div>
+          <div className="col-span-4 font-mono text-[10px] uppercase tracking-widest text-text3">// consultorias agênticas</div>
+          <div className="col-span-4 font-mono text-[10px] uppercase tracking-widest" style={{ color: "#C9A84A" }}>// pulsaros</div>
         </div>
         {rows.map(([k, a, b], i) => (
-          <div
-            key={k}
-            className={`grid grid-cols-12 px-6 py-5 ${i % 2 === 1 ? "bg-white/[0.015]" : ""}`}
-          >
+          <div key={k} className={`grid grid-cols-12 px-6 py-5 ${i % 2 === 1 ? "bg-white/[0.015]" : ""}`}>
             <div className="col-span-4 text-sm md:text-base font-medium text-cream">{k}</div>
             <div className="col-span-4 text-sm text-text2 pr-4">{a}</div>
             <div className="col-span-4 text-sm text-cream pr-4 border-l border-gold/20 pl-4">{b}</div>
           </div>
         ))}
       </div>
-
-      <div className="mt-8 flex items-start gap-3 text-text3 text-sm">
-        <ShieldCheck className="w-4 h-4 text-gold shrink-0 mt-0.5" />
-        <p className="max-w-3xl">
-          Sem ataque a ninguém · o mercado de consultoria agêntica é sério e cobra justo pelo serviço
-          completo. PulsarOS é a versão pra quem quer{" "}
-          <span className="text-cream">posse total e fração do custo</span> · trocando equipe de
-          atendimento por uma curva de aprendizado de 7 dias.
-        </p>
-      </div>
     </Section>
   );
 }
 
 /* ============================================================
- * 3. PULSE
- * ========================================================== */
-
-function SectionPulse() {
-  return (
-    <Section bg="navy" id="pulse">
-      <div className="grid md:grid-cols-12 gap-12 items-start">
-        <div className="md:col-span-5">
-          <Eyebrow>Agente #1 · orquestrador</Eyebrow>
-          <H2>
-            Conheça o <span className="h-grad-gold">Pulse</span>
-            <br />
-            seu CEO virtual.
-          </H2>
-          <Lede className="mt-6">
-            Pulse é o cérebro central. Recebe a ordem, decide quem executa, cobra prazo, valida
-            entrega e responde com evidência. Não é um chatbot · é o ponto único de comando da
-            sua operação.
-          </Lede>
-          <ul className="mt-8 space-y-3">
-            {[
-              "Delega para Donna, VPs ou heads conforme o caso",
-              "Protocolo de 3 fases: eco em 10s · execução · entrega com evidência",
-              "Memória persistente por categoria (context · projects · sessions · feedback)",
-              "Tom direto · sem floreio · pensa em margem",
-            ].map((t) => (
-              <li key={t} className="flex items-start gap-3 text-text2">
-                <Check className="w-4 h-4 text-gold shrink-0 mt-1" />
-                <span className="leading-relaxed">{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="md:col-span-7">
-          <div className="relative">
-            {/* Avatar Pulse */}
-            <div
-              className="card-glass rounded-2xl overflow-hidden glow-gold relative aspect-[4/3]"
-              style={{ borderColor: "rgba(201,168,74,0.35)" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/pulse.jpg"
-                alt="Pulse · CEO virtual"
-                className="w-full h-full object-cover"
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 40%, rgba(11,12,31,0.85) 95%)",
-                }}
-              />
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                <div>
-                  <div className="eyebrow">Pulse · CEO virtual</div>
-                  <div className="font-display text-3xl text-cream">Orquestrador</div>
-                </div>
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-gold">
-                  <span className="w-2 h-2 rounded-full bg-green animate-pulse-glow" />
-                  online
-                </div>
-              </div>
-            </div>
-
-            {/* Terminal log flutuando */}
-            <div
-              className="mt-4 font-mono text-xs space-y-2 bg-black/60 rounded-xl p-5 border border-gold/25 backdrop-blur"
-            >
-              <div className="flex items-center gap-2 pb-2 border-b border-line">
-                <span className="w-2.5 h-2.5 rounded-full bg-red/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-gold/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green/70" />
-                <span className="ml-2 text-text3 text-[10px] uppercase tracking-widest">pulse @ tuaempresa ~ live</span>
-              </div>
-              <div className="text-gold/70">[14:32:01]</div>
-              <div className="text-text2">
-                <span className="text-green">+</span> Rodrigo: "monta carrossel sobre IA agêntica"
-              </div>
-              <div className="text-text2">
-                <span className="text-gold">→</span> Pulse: 👀 entendi · delegando pra Caio+Keila · 10 min
-              </div>
-              <div className="text-text2">
-                <span className="text-violet2">↳</span> delegando: caio (estratégia) + keila (arte/copy)
-              </div>
-              <div className="text-text2">
-                <span className="text-gold">→</span> Pulse: Pronto Chefe · carrossel entregue · 8 min ·{" "}
-                <span className="text-gold underline decoration-dotted">/conteudo/calendario</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ============================================================
- * 4. DONNA
- * ========================================================== */
-
-function SectionDonna() {
-  return (
-    <Section bg="navy2" id="donna">
-      <div className="grid md:grid-cols-12 gap-12 items-start">
-        <div className="md:col-span-7 order-2 md:order-1">
-          <div className="relative">
-            <div
-              className="card-glass rounded-2xl overflow-hidden glow-violet relative aspect-[4/3]"
-              style={{ borderColor: "rgba(122,91,160,0.45)" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/donna.jpg"
-                alt="Donna · secretária executiva"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: "center top" }}
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 40%, rgba(11,12,31,0.85) 95%)",
-                }}
-              />
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                <div>
-                  <div className="eyebrow" style={{ color: "#A78BFA" }}>
-                    Donna · secretária executiva
-                  </div>
-                  <div className="font-display text-3xl text-cream">Filtro inteligente</div>
-                </div>
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest" style={{ color: "#A78BFA" }}>
-                  <span className="w-2 h-2 rounded-full bg-green animate-pulse-glow" />
-                  online
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 font-mono text-xs space-y-2 bg-black/60 rounded-xl p-5 border border-violet2/30 backdrop-blur">
-              <div className="flex items-center gap-2 pb-2 border-b border-line">
-                <span className="w-2.5 h-2.5 rounded-full bg-red/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-gold/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green/70" />
-                <span className="ml-2 text-text3 text-[10px] uppercase tracking-widest">donna @ tuaempresa ~ live</span>
-              </div>
-              <div className="text-violet2/70">[09:14:22]</div>
-              <div className="text-text2">
-                <span className="text-green">+</span> Cliente X: "quero reunião pra falar do projeto"
-              </div>
-              <div className="text-text2">
-                <span className="text-violet2">→</span> Donna: 👀 saquei · vejo agenda e te confirmo · 2 min
-              </div>
-              <div className="text-text2">
-                <span className="text-violet2">→</span> Donna: Terça 14h livre · convite enviado · agenda bloqueada
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="md:col-span-5 order-1 md:order-2">
-          <Eyebrow>Agente #2 · interface humana</Eyebrow>
-          <H2>
-            Donna ·<br />
-            <span style={{ color: "#A78BFA" }}>protege sua agenda.</span>
-          </H2>
-          <Lede className="mt-6">
-            Donna recebe contato, filtra ruído, agenda reunião, lembra prazo, cobra retorno. É a sua
-            assistente de chefe · não a sua atendente.
-          </Lede>
-          <ul className="mt-8 space-y-3">
-            {[
-              "Triagem de mensagens · só sobe o que merece teu tempo",
-              "Gestão de agenda · bloqueia janelas, marca, cancela, remarca",
-              "Memória de contatos · sabe com quem tu já falou e quando",
-              "Tom diplomático · resolve sem te puxar para o problema",
-            ].map((t) => (
-              <li key={t} className="flex items-start gap-3 text-text2">
-                <Check className="w-4 h-4 shrink-0 mt-1" style={{ color: "#A78BFA" }} />
-                <span className="leading-relaxed">{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ============================================================
- * 5. 6 VPs
- * ========================================================== */
-
-function SectionVPs() {
-  return (
-    <Section bg="navy" id="vps">
-      <Eyebrow>Seis cadeiras na diretoria</Eyebrow>
-      <H2 className="max-w-3xl">
-        Sua mesa de <span className="h-grad-gold">VPs</span> ·<br />
-        seis especialistas alinhados.
-      </H2>
-      <Lede className="mt-6">
-        Cada VP tem soul, skills e tom próprio · reportam ao Pulse, decidem dentro da sua área,
-        cobram entregas dos heads. Você não gerencia 6 freelancers · você comanda 6 diretores.
-      </Lede>
-
-      <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {VPS.map((vp) => (
-          <AgentCard key={vp.slug} agent={vp} />
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ============================================================
- * 6. 28 HEADS
- * ========================================================== */
-
-function SectionHeads() {
-  return (
-    <Section bg="navy2" id="heads">
-      <div className="grid md:grid-cols-12 gap-12">
-        <div className="md:col-span-5">
-          <Eyebrow>Embaixo dos VPs · time pronto</Eyebrow>
-          <H2>
-            28 heads especializados ·<br />
-            <span className="h-grad-gold">a hierarquia inteira.</span>
-          </H2>
-          <Lede className="mt-6">
-            Cada VP gerencia heads próprios. Caio comanda Dani (SDR) e Flávio (prospec). Alfredo
-            comanda Keila (carrossel) e Pedro (tráfego). E assim por diante. Você não tem só seis
-            caras · tem time.
-          </Lede>
-          <div className="mt-8 flex items-center gap-3 text-text3 text-sm">
-            <Sparkles className="w-4 h-4 text-gold" />
-            <span>Lista abaixo é amostra · pacote vem com os 28 ativados.</span>
-          </div>
-        </div>
-
-        <div className="md:col-span-7">
-          <div className="card-glass rounded-2xl p-6 md:p-8">
-            <div className="eyebrow mb-4">Amostra · 6 heads</div>
-            <div>
-              {HEADS.map((h) => (
-                <MiniSkillRow key={h.name} name={h.name} role={h.role} color={h.color} />
-              ))}
-            </div>
-            <div className="mt-6 pt-6 border-t border-line text-text3 text-sm font-mono">
-              + 22 outros heads · Rebecca · Simon-aux · Falconi-ops · Dalio-cash · Flávia-ux · etc
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ============================================================
- * 7. WAR ROOM
+ * 10. WAR ROOM
  * ========================================================== */
 
 function SectionWarRoom() {
@@ -545,7 +778,7 @@ function SectionWarRoom() {
   ];
   return (
     <Section bg="navy" id="warroom">
-      <Eyebrow>Onde tu comanda</Eyebrow>
+      <SectionLabel num="07" label="war.room" />
       <H2 className="max-w-4xl">
         War Room ·<br />
         <span className="h-grad-gold">o cockpit do dono.</span>
@@ -565,7 +798,9 @@ function SectionWarRoom() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-line">
           {tiles.map((t, i) => (
             <div key={i} className="bg-navy p-6 min-h-[180px] flex flex-col justify-between">
-              <div className="eyebrow">Tela {String(i + 1).padStart(2, "0")}</div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                tela {String(i + 1).padStart(2, "0")}
+              </div>
               <div className="font-display text-lg leading-tight mt-3">{t}</div>
               <div className="mt-4 h-1 w-12 bg-gold/60 rounded-full" />
             </div>
@@ -573,19 +808,17 @@ function SectionWarRoom() {
         </div>
       </div>
 
-      {/* Três mockups de terminal · pulso vivo */}
       <div className="mt-12 grid md:grid-cols-3 gap-5">
-        {/* Activity feed */}
         <div className="card-glass rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green animate-pulse-glow" />
-              <span className="eyebrow">activity · live</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gold">activity · live</span>
             </div>
             <span className="text-text3 text-[10px] font-mono">refresh 30s</span>
           </div>
           <div className="font-mono text-[10px] space-y-1.5 leading-snug">
-            <div><span className="text-gold/60">14:31</span> <span className="text-gold">PULSE</span> <span className="text-text2">delegou cuidado de carrossel para Caio</span></div>
+            <div><span className="text-gold/60">14:31</span> <span className="text-gold">PULSE</span> <span className="text-text2">delegou carrossel para Caio</span></div>
             <div><span className="text-gold/60">14:30</span> <span className="text-violet2">DONNA</span> <span className="text-text2">filtrou 12 emails · subiu 2</span></div>
             <div><span className="text-gold/60">14:28</span> <span style={{color:'#4ADE80'}}>CAIO</span> <span className="text-text2">qualificou lead · score 87</span></div>
             <div><span className="text-gold/60">14:25</span> <span style={{color:'#E04D6C'}}>ALFREDO</span> <span className="text-text2">aprovou copy do anúncio Meta</span></div>
@@ -595,12 +828,11 @@ function SectionWarRoom() {
           </div>
         </div>
 
-        {/* DRE viva */}
         <div className="card-glass rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-gold" />
-              <span className="eyebrow">dre · maio/2026</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gold">dre · maio/2026</span>
             </div>
             <span className="text-green text-[10px] font-mono">+18%</span>
           </div>
@@ -618,12 +850,11 @@ function SectionWarRoom() {
           </div>
         </div>
 
-        {/* Cérebro · skill registry */}
         <div className="card-glass rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full" style={{ background: "#A78BFA" }} />
-              <span className="eyebrow" style={{ color: "#A78BFA" }}>cérebro · skills</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: "#A78BFA" }}>cérebro · skills</span>
             </div>
             <span className="text-text3 text-[10px] font-mono">28 ativas</span>
           </div>
@@ -661,48 +892,64 @@ function Row({ k, v, tone, bold }: { k: string; v: string; tone: string; bold?: 
 }
 
 /* ============================================================
- * 8. ARQUITETURA · POSSE TOTAL
+ * 11. ARQUITETURA DUAL
  * ========================================================== */
 
-function SectionArchitecture() {
+function SectionArquitetura() {
   return (
     <Section bg="navy2" id="arquitetura">
-      <Eyebrow>Posse total · sem refém</Eyebrow>
-      <H2 className="max-w-4xl">
-        Sua empresa · <span className="h-grad-gold">seu servidor</span> ·<br />
-        sua doutrina.
+      <SectionLabel num="08" label="arquitetura.entrega" />
+      <H2 className="max-w-3xl">
+        Como você recebe o <span className="h-grad-gold">time</span>.
       </H2>
       <Lede className="mt-6">
-        PulsarOS não é SaaS. Você compra, instala na sua VPS, edita o cérebro, controla o acesso.
-        Se eu sumir amanhã, sua operação continua. Se quiser migrar de cloud, migra. Se quiser
-        fechar tudo, fecha.
+        Você não fica refém de plataforma de ninguém. A gente entrega duas estruturas paralelas pra
+        você operar. A oficial roda em Claude. A de contingência entra automaticamente caso a
+        oficial pare. As duas no seu servidor.
       </Lede>
 
-      <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-        {TECH.map((t) => {
-          const Icon = t.icon;
-          return (
-            <div key={t.title} className="card-glass rounded-2xl p-6 hairline">
-              <Icon className="w-5 h-5 text-gold mb-4" />
-              <div className="font-display text-xl mb-2">{t.title}</div>
-              <p className="text-sm text-text2 leading-relaxed" style={{ fontWeight: 300 }}>
-                {t.txt}
-              </p>
+      <div className="mt-14 grid md:grid-cols-2 gap-6">
+        {/* Oficial · Claude */}
+        <div className="card-glass rounded-2xl p-8" style={{ borderColor: "rgba(201,168,74,0.4)" }}>
+          <div className="font-mono text-[10px] uppercase tracking-widest text-gold mb-4">
+            [ estrutura oficial ]
+          </div>
+          <div className="flex items-baseline gap-3 mb-3">
+            <span className="font-mono text-2xl text-gold">[C]</span>
+            <div className="font-display text-3xl md:text-4xl text-cream leading-tight">
+              Claude Code
             </div>
-          );
-        })}
-      </div>
+          </div>
+          <div className="font-mono text-xs text-text3 mb-5">+ assinatura Claude Max</div>
+          <p className="text-text2 leading-relaxed" style={{ fontWeight: 300 }}>
+            É a estrutura principal. Roda 24/7 no seu servidor com a inteligência completa do
+            Claude Sonnet/Opus. É essa que opera no dia a dia · 95% do tempo.
+          </p>
+          <div className="mt-6 font-mono text-[10px] text-text3 space-y-1">
+            <div>$ status · <span className="text-green">operational ●</span></div>
+            <div>$ uptime · <span className="text-gold">99.8%</span></div>
+          </div>
+        </div>
 
-      <div className="mt-12 card-glass rounded-2xl p-8 border-gold/30" style={{ borderColor: "rgba(201,168,74,0.3)" }}>
-        <div className="flex items-start gap-4">
-          <ShieldCheck className="w-6 h-6 text-gold shrink-0 mt-1" />
-          <div>
-            <div className="font-display text-2xl mb-3">Princípio inviolável</div>
-            <p className="text-text2 leading-relaxed max-w-3xl" style={{ fontWeight: 300 }}>
-              Você é dono do código, do banco, do servidor, do domínio, dos prompts e da memória.
-              Nada fica trancado num painel proprietário. PulsarOS é uma biblioteca de agentes que
-              você instala · não um serviço que você assina.
-            </p>
+        {/* Contingência · OpenClaw */}
+        <div className="card-glass rounded-2xl p-8" style={{ borderColor: "rgba(122,91,160,0.45)" }}>
+          <div className="font-mono text-[10px] uppercase tracking-widest mb-4" style={{ color: "#A78BFA" }}>
+            [ estrutura de contingência ]
+          </div>
+          <div className="flex items-baseline gap-3 mb-3">
+            <span className="font-mono text-2xl" style={{ color: "#A78BFA" }}>{`{<>}`}</span>
+            <div className="font-display text-3xl md:text-4xl text-cream leading-tight">
+              OpenClaw
+            </div>
+          </div>
+          <div className="font-mono text-xs text-text3 mb-5">+ assinatura OpenAI ou Z.AI GLM</div>
+          <p className="text-text2 leading-relaxed" style={{ fontWeight: 300 }}>
+            Backup automático. Se a oficial parar por qualquer motivo (atualização, instabilidade,
+            manutenção), essa entra no lugar e o time não para de produzir.
+          </p>
+          <div className="mt-6 font-mono text-[10px] text-text3 space-y-1">
+            <div>$ status · <span style={{ color: "#A78BFA" }}>standby ●</span></div>
+            <div>$ failover · <span className="text-gold">&lt; 30s</span></div>
           </div>
         </div>
       </div>
@@ -711,18 +958,59 @@ function SectionArchitecture() {
 }
 
 /* ============================================================
- * 9. GARANTIA
+ * 12. POSSE TOTAL (6 bullets)
+ * ========================================================== */
+
+function SectionPosseTotal() {
+  const bullets = [
+    "Tudo roda autônomo no seu servidor. Não fica dependendo de nuvem nossa nem de terceiros.",
+    "Você é o dono da operação. Sem refém de licença, sem trava, sem dependência de plataforma alheia.",
+    "Ninguém consegue tirar isso de você nem travar a sua operação. Está rodando na sua máquina.",
+    "A instalação completa leva até 7 dias. A gente cuida de tudo, setup, testes, ajustes finos por canal.",
+    "Os agentes vão prontos pra operar · com instruções claras de como você pede cada coisa.",
+    "Se eu sumir amanhã, sua operação continua. Migra de cloud, fecha tudo, edita o que quiser.",
+  ];
+  return (
+    <Section bg="navy" id="posse">
+      <SectionLabel num="09" label="posse.total" />
+      <H2 className="max-w-3xl">
+        Depois de instalado, <span className="h-grad-gold">é seu</span>.
+      </H2>
+      <Lede className="mt-6">
+        PulsarOS não é SaaS. Você compra, instala na sua VPS, edita o cérebro, controla o acesso.
+      </Lede>
+
+      <div className="mt-14 grid md:grid-cols-2 gap-x-10 gap-y-5">
+        {bullets.map((b, i) => (
+          <div key={b} className="flex gap-4 items-start py-3 border-b border-line">
+            <span className="font-mono text-xs text-gold/60 mt-0.5">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <p className="text-text2 leading-relaxed" style={{ fontWeight: 300 }}>{b}</p>
+          </div>
+        ))}
+      </div>
+
+      <AsciiDivider />
+    </Section>
+  );
+}
+
+/* ============================================================
+ * 13. GARANTIA
  * ========================================================== */
 
 function SectionGuarantee() {
   return (
-    <Section bg="navy" id="garantia">
+    <Section bg="navy2" id="garantia">
       <div className="card-glass rounded-3xl p-10 md:p-16 text-center max-w-3xl mx-auto glow-gold">
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gold/15 border border-gold/40 mb-8">
           <ShieldCheck className="w-9 h-9 text-gold" />
         </div>
-        <Eyebrow>Garantia · 7 dias</Eyebrow>
-        <H2 className="mt-2">
+        <div className="font-mono text-[10px] uppercase tracking-widest text-gold mb-3">
+          // garantia.7d
+        </div>
+        <H2>
           Sem fit? <span className="h-grad-gold">Devolvo 100%.</span>
         </H2>
         <p className="mt-6 text-lg text-text2 leading-relaxed" style={{ fontWeight: 300 }}>
@@ -736,14 +1024,14 @@ function SectionGuarantee() {
 }
 
 /* ============================================================
- * 10. PRICING · 2 PLANOS
+ * 14. PRICING · 2 PLANOS
  * ========================================================== */
 
 function SectionPricing() {
   return (
-    <Section bg="navy2" id="preco">
+    <Section bg="navy" id="preco">
+      <SectionLabel num="10" label="investimento" />
       <div className="text-center max-w-3xl mx-auto">
-        <Eyebrow>Investimento · dois caminhos</Eyebrow>
         <H2>
           Self-install ou <span className="h-grad-gold">com Rodrigo do teu lado.</span>
         </H2>
@@ -755,7 +1043,7 @@ function SectionPricing() {
       <div className="mt-16 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
         {/* ESSENCIAL */}
         <div className="card-glass rounded-3xl p-8 md:p-10 hairline relative">
-          <div className="eyebrow">Plano · ESSENCIAL</div>
+          <div className="font-mono text-[10px] uppercase tracking-widest text-gold">// plano.essencial</div>
           <div className="mt-2 font-display text-3xl">Self-install</div>
           <p className="text-text2 text-sm mt-2" style={{ fontWeight: 300 }}>
             Tu instala. Tu opera. Tu manda.
@@ -776,7 +1064,7 @@ function SectionPricing() {
               "12 meses de updates gratuitos",
             ].map((t) => (
               <li key={t} className="flex items-start gap-3 text-text2">
-                <Check className="w-4 h-4 text-gold shrink-0 mt-1" />
+                <Plus className="w-4 h-4 text-gold shrink-0 mt-1" />
                 <span className="leading-relaxed text-sm">{t}</span>
               </li>
             ))}
@@ -809,7 +1097,7 @@ function SectionPricing() {
             ★ recomendado
           </div>
 
-          <div className="eyebrow">Plano · COMPLETO</div>
+          <div className="font-mono text-[10px] uppercase tracking-widest text-gold">// plano.completo</div>
           <div className="mt-2 font-display text-3xl">Com assistência</div>
           <p className="text-text2 text-sm mt-2" style={{ fontWeight: 300 }}>
             Rodrigo instala junto · 1 sessão de 4h.
@@ -830,7 +1118,7 @@ function SectionPricing() {
               "Acesso vitalício a novas skills",
             ].map((t) => (
               <li key={t} className="flex items-start gap-3 text-cream">
-                <Check className="w-4 h-4 text-gold shrink-0 mt-1" />
+                <Plus className="w-4 h-4 text-gold shrink-0 mt-1" />
                 <span className="leading-relaxed text-sm">{t}</span>
               </li>
             ))}
@@ -854,15 +1142,15 @@ function SectionPricing() {
 }
 
 /* ============================================================
- * 11. LEAD FORM · CADASTRO
+ * 15. LEAD FORM
  * ========================================================== */
 
 function SectionLead() {
   return (
     <Section bg="radial" id="cadastro">
+      <SectionLabel num="11" label="cadastro" />
       <div className="grid md:grid-cols-12 gap-10">
         <div className="md:col-span-5">
-          <Eyebrow>Cadastro · vagas limitadas</Eyebrow>
           <H2>
             Pronto pra <span className="h-grad-gold">instalar?</span>
           </H2>
@@ -890,19 +1178,20 @@ function SectionLead() {
             method="POST"
           >
             <div className="grid sm:grid-cols-2 gap-5">
-              <Field label="Nome completo" name="nome" required />
-              <Field label="Email" name="email" type="email" required />
-              <Field label="WhatsApp" name="whatsapp" required />
+              <Field label="Nome completo" name="nome" required placeholder="Informe seu nome completo." />
+              <Field label="Email" name="email" type="email" required placeholder="Informe um email válido." />
+              <Field label="WhatsApp" name="whatsapp" required placeholder="DDD + número." />
               <Field label="Empresa" name="empresa" />
               <Field label="Setor" name="setor" placeholder="ex: agência, ecommerce, consultoria" />
               <SelectField
                 label="Faturamento mensal"
                 name="faturamento"
                 options={[
-                  "Até R$ 50k",
-                  "R$ 50k – R$ 200k",
-                  "R$ 200k – R$ 1M",
-                  "Acima de R$ 1M",
+                  "Até R$ 50 mil",
+                  "R$ 50 mil a R$ 200 mil",
+                  "R$ 200 mil a R$ 500 mil",
+                  "R$ 500 mil a R$ 1 milhão",
+                  "Acima de R$ 1 milhão",
                 ]}
               />
               <SelectField
@@ -918,7 +1207,7 @@ function SectionLead() {
             </div>
 
             <label className="block mt-5 text-text2 text-sm">
-              <span className="block mb-2 eyebrow" style={{ color: "rgba(242,239,230,0.5)" }}>
+              <span className="block mb-2 font-mono text-[10px] uppercase tracking-widest text-text3">
                 Mensagem (opcional)
               </span>
               <textarea
@@ -943,21 +1232,13 @@ function SectionLead() {
 }
 
 function Field({
-  label,
-  name,
-  type = "text",
-  required,
-  placeholder,
+  label, name, type = "text", required, placeholder,
 }: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
+  label: string; name: string; type?: string; required?: boolean; placeholder?: string;
 }) {
   return (
     <label className="block text-text2 text-sm">
-      <span className="block mb-2 eyebrow" style={{ color: "rgba(242,239,230,0.5)" }}>
+      <span className="block mb-2 font-mono text-[10px] uppercase tracking-widest text-text3">
         {label} {required && <span className="text-gold">*</span>}
       </span>
       <input
@@ -971,20 +1252,10 @@ function Field({
   );
 }
 
-function SelectField({
-  label,
-  name,
-  options,
-}: {
-  label: string;
-  name: string;
-  options: string[];
-}) {
+function SelectField({ label, name, options }: { label: string; name: string; options: string[] }) {
   return (
     <label className="block text-text2 text-sm">
-      <span className="block mb-2 eyebrow" style={{ color: "rgba(242,239,230,0.5)" }}>
-        {label}
-      </span>
+      <span className="block mb-2 font-mono text-[10px] uppercase tracking-widest text-text3">{label}</span>
       <select
         name={name}
         className="w-full bg-black/30 border border-line rounded-md px-4 py-3 text-cream focus:outline-none focus:border-gold/60 transition"
@@ -992,9 +1263,7 @@ function SelectField({
       >
         <option value="" disabled>Selecione...</option>
         {options.map((o) => (
-          <option key={o} value={o} className="bg-navy">
-            {o}
-          </option>
+          <option key={o} value={o} className="bg-navy">{o}</option>
         ))}
       </select>
     </label>
@@ -1002,35 +1271,45 @@ function SelectField({
 }
 
 /* ============================================================
- * FOOTER
+ * FOOTER · 3 cards tech
  * ========================================================== */
 
 function Footer() {
   return (
     <footer className="border-t border-line bg-navy">
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-12 flex flex-col md:flex-row gap-8 md:items-center md:justify-between">
-        <div>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-md bg-gold/15 border border-gold/40 flex items-center justify-center">
-              <Terminal className="w-4 h-4 text-gold" />
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          {[
+            { sym: "[C]",   name: "Claude",       desc: "cérebro estratégico",     c: "#C9A84A" },
+            { sym: "{<>}",  name: "OpenClaw",     desc: "infraestrutura fallback", c: "#A78BFA" },
+            { sym: "$_",    name: "PulsarH.ai",   desc: "tua operação · teu time", c: "#4ADE80" },
+          ].map((t) => (
+            <div key={t.name} className="card-glass rounded-xl p-5 text-center">
+              <div className="font-mono text-2xl mb-2" style={{ color: t.c }}>{t.sym}</div>
+              <div className="font-display text-lg text-cream">{t.name}</div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-text3 mt-1">{t.desc}</div>
             </div>
-            <span className="font-display text-lg">PulsarOS</span>
-          </div>
-          <p className="text-text3 text-sm max-w-md">
-            Uma empresa em forma de IA · instalada no seu servidor. © 2026 · Rodrigo Braga ·
-            todos os direitos reservados.
-          </p>
+          ))}
         </div>
-        <div className="flex items-center gap-6 text-text3 text-xs uppercase tracking-widest font-mono">
-          <a href="mailto:contato@pulsaros.com.br" className="hover:text-gold transition">
-            contato@pulsaros.com.br
-          </a>
-          <a href="/termos" className="hover:text-gold transition">
-            termos
-          </a>
-          <a href="/privacidade" className="hover:text-gold transition">
-            privacidade
-          </a>
+
+        <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between pt-8 border-t border-line">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-7 h-7 rounded-md bg-gold/15 border border-gold/40 flex items-center justify-center">
+                <Terminal className="w-3.5 h-3.5 text-gold" />
+              </div>
+              <span className="font-display text-base">PulsarOS</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-text3">v2.0</span>
+            </div>
+            <p className="text-text3 text-sm max-w-md">
+              © 2026 Rodrigo Braga · uma empresa em forma de IA · instalada no seu servidor · sem refém.
+            </p>
+          </div>
+          <div className="flex items-center gap-6 text-text3 text-xs uppercase tracking-widest font-mono">
+            <a href="mailto:contato@pulsaros.com.br" className="hover:text-gold transition">contato</a>
+            <a href="/termos" className="hover:text-gold transition">termos</a>
+            <a href="/privacidade" className="hover:text-gold transition">privacidade</a>
+          </div>
         </div>
       </div>
     </footer>
